@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="robot app" type="ROBOT_RUN_CONFIGURATION" factoryName="Robot configuration factory">
+    <module name="" />
+    <option name="deployTarget" value="emulator" />
+    <option name="tabletIP" value="" />
+    <option name="tabletPort" value="5555" />
+    <option name="cpuABI" value="x86" />
+    <option name="useGPU" value="true" />
+    <option name="launchActivity" value="default_activity" />
+    <option name="launchModule" value="app" />
+    <option name="launchPackage" value="com.example.marcos.test2" />
+    <option name="startActivity" value=".MainActivity" />
+    <method />
+  </configuration>
+</component>
