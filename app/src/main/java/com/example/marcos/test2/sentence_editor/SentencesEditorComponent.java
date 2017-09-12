@@ -14,6 +14,6 @@ import dagger.Component;
 public interface SentencesEditorComponent {
     void inject(SentencesPresenterLoader loader);
     void inject(SentencesPresenter presenter);
-    void inject(MainActivity activity);
+    void inject(SentencesEditorActivity activity);
     void inject(SentencesEditorFrag frag);
 }

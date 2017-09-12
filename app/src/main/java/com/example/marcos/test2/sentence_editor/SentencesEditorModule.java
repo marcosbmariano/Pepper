@@ -1,9 +1,17 @@
 package com.example.marcos.test2.sentence_editor;
 
-import android.content.Context;
+
+import android.util.Log;
+
+import com.example.marcos.test2.application.PepperApplication;
+
+import java.util.Collections;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 /**
  * TODO: Add class header comment.
@@ -11,6 +19,7 @@ import dagger.Provides;
 
 @Module
 public class SentencesEditorModule {
+    public static final String TAG ="SentenceSModule"; //TODO remove this
 
     @SentencesEditorScope
     @Provides
@@ -24,10 +33,16 @@ public class SentencesEditorModule {
         return new SentencesPresenter();
     }
 
+
     @SentencesEditorScope
     @Provides
-    public SentencesEditorAdapter provideAdapter(){
-        return new SentencesEditorAdapter();
+    public SentencesRealmRCVAdapter provideRealmAdapter(){
+        //Realm realm = Realm.getDefaultInstance();
+       // SentencesRealmRCVAdapter result = new SentencesRealmRCVAdapter( realm.where(SentenceModel.class).findAll(), true);
+        //realm.close();
+        //return result;
+        return new SentencesRealmRCVAdapter(null, true);
     }
+
 
 }

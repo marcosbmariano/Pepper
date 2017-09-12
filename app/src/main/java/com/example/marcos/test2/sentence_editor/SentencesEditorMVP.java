@@ -1,6 +1,6 @@
 package com.example.marcos.test2.sentence_editor;
 
-import java.util.List;
+import io.realm.RealmResults;
 
 /**
  * TODO: Add class header comment.
@@ -13,18 +13,20 @@ public class SentencesEditorMVP {
     }
 
     public interface View{
-        void loadData(List<Model> models, int what);
+        void loadData(RealmResults<SentenceModel> models, int what);
     }
 
     public interface Presenter{
         void deleteView();
         void setView(View view);
         void loadFilesList();
-        void receiveFilesFromRepo(List<SentencesEditorMVP.Model> files);
+        void receiveFilesFromRepo(RealmResults<SentenceModel> files);
+        void closeRepositories();
     }
 
     public interface ModelRepository{
         void loadFiles(Presenter presenter);
+        void closeRepository();
 
 
     }

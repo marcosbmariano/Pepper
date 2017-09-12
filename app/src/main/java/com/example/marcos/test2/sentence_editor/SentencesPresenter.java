@@ -1,8 +1,8 @@
 package com.example.marcos.test2.sentence_editor;
 
-import java.util.List;
-
 import javax.inject.Inject;
+
+import io.realm.RealmResults;
 
 
 /**
@@ -32,7 +32,14 @@ public class SentencesPresenter implements SentencesEditorMVP.Presenter {
     }
 
     @Override
-    public void receiveFilesFromRepo(List<SentencesEditorMVP.Model> files) {
+    public void receiveFilesFromRepo(RealmResults<SentenceModel> files) {
         mView.loadData(files, 0);
     }
+
+    @Override
+    public void closeRepositories() {
+        mSentencesRepo.closeRepository();
+    }
+
+
 }

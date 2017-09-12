@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.marcos.test2">
 
+    <uses-feature android:name="com.softbank.hardware.pepper" />
+
     <application
         android:name=".application.PepperApplication"
         android:allowBackup="true"
@@ -17,7 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".sentence_editor.SentencesEditorActivity"
+            android:label="@string/title_activity_sentences_editor"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.marcos.test2.MainActivity" />
+        </activity>
     </application>
 
-    <uses-feature android:name="com.softbank.hardware.pepper"/>
 </manifest>

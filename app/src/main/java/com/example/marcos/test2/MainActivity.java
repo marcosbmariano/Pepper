@@ -1,22 +1,27 @@
 package com.example.marcos.test2;
 
+import android.content.Intent;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.aldebaran.qi.QiCallback;
 import com.aldebaran.qi.sdk.Qi;
 import com.aldebaran.qi.sdk.object.interaction.Say;
-import com.example.marcos.test2.sentence_editor.SentencesEditorAdapter;
+import com.example.marcos.test2.sentence_editor.SentenceModel;
+import com.example.marcos.test2.sentence_editor.SentencesEditorActivity;
 import com.example.marcos.test2.sentence_editor.SentencesEditorFrag;
 import com.example.marcos.test2.sentence_editor.SentencesEditorMVP;
 import com.example.marcos.test2.sentence_editor.SentencesPresenterLoader;
-
-import java.util.List;
+import com.example.marcos.test2.sentence_editor.SentencesRealmRCVAdapter;
 
 import javax.inject.Inject;
+
+import io.realm.RealmResults;
 
 /**
  * A client needs Pepper to greet customers as they come to their store.
@@ -25,71 +30,71 @@ import javax.inject.Inject;
  */
 
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks,
-        SentencesEditorMVP.View{
+public class MainActivity extends AppCompatActivity{
     private static final String TAG = "SayActivity";
-    private SentencesEditorMVP.Presenter mSentencesPresenter;
-    private SentencesPresenterLoader mSPLoader;
-    @Inject SentencesEditorAdapter mAdapter;
+    //private SentencesEditorMVP.Presenter mSentencesPresenter;
+    //private SentencesPresenterLoader mSPLoader;
+    //@Inject SentencesRealmRCVAdapter mRCVAdapter;
+    private Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "OnCreate");
         setContentView(R.layout.activity_main);
-        getSupportLoaderManager().initLoader(R.id.sentencesLoaderPresenter, null, this);
+        setupViews();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //inject everything that shares lifecycle with the loader/activity
-        mSPLoader.getComponent().inject(this);
-        mSPLoader.getComponent().inject( //inject fragment
-                (SentencesEditorFrag)getSupportFragmentManager()
-                        .findFragmentById(R.id.frag_sent_editor));
-
+    private void setupViews(){
+        mButton = (Button)findViewById(R.id.button);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SentencesEditorActivity.class));
+            }
+        });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mSentencesPresenter.setView(this);
-        mSentencesPresenter.loadFilesList();
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mSentencesPresenter.deleteView();
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        //inject everything that shares lifecycle with the loader/activity
+//        mSPLoader.getComponent().inject(this);
+//        mSPLoader.getComponent().inject( //inject fragment
+//                (SentencesEditorFrag)getSupportFragmentManager()
+//                        .findFragmentById(R.id.frag_sent_editor));
+//
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        mSentencesPresenter.setView(this);
+//        mSentencesPresenter.loadFilesList();
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        //mSentencesPresenter.deleteView();
+//    }
 
-    @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-        return new SentencesPresenterLoader(this);
-    }
+//    @Override
+//    public Loader onCreateLoader(int id, Bundle args) {
+//        return new SentencesPresenterLoader(this);
+//    }
 
-    @Override
-    public void onLoadFinished(Loader loader, Object presenter) {
-        mSPLoader = (SentencesPresenterLoader)loader;
-        mSentencesPresenter = (SentencesEditorMVP.Presenter) presenter;
-    }
+//    @Override
+//    public void onLoadFinished(Loader loader, Object presenter) {
+//        mSPLoader = (SentencesPresenterLoader)loader;
+//        mSentencesPresenter = (SentencesEditorMVP.Presenter) presenter;
+//    }
 
-    @Override
-    public void onLoaderReset(Loader loader) {
-        mSentencesPresenter.deleteView();
-        mSentencesPresenter = null;
-    }
-
-    /**
-     * This method is called by the Presenter to the activity that will manage and distribute all data
-     * to any fragment
-     */
-
-    @Override
-    public void loadData(List<SentencesEditorMVP.Model> models, int what) {
-        mAdapter.setmData(models);
-    }
+//    @Override
+//    public void onLoaderReset(Loader loader) {
+//        mSentencesPresenter.deleteView();
+//        mSentencesPresenter = null;
+//    }
 
     private void sayHello(){
         Say say = new Say(this);
@@ -111,4 +116,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }));
 
     }
+
+
 }

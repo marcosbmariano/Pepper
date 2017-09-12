@@ -6,10 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.marcos.test2.MainActivity">
 
-    <fragment
-        android:id="@+id/frag_sent_editor"
-        android:name="com.example.marcos.test2.sentence_editor.SentencesEditorFrag"
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_sentences_editor" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="64dp"
+        android:text="Button" />
 </RelativeLayout>

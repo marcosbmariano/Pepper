@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class SentencesEditorFrag extends Fragment {
     private static final String TAG = "SentEdFrag";
     private RecyclerView mRCView;
-    @Inject SentencesEditorAdapter mAdapter;
+    @Inject SentencesRealmRCVAdapter mRCVAdapter;
 
     public SentencesEditorFrag() {
         // Required empty public constructor
@@ -39,7 +39,7 @@ public class SentencesEditorFrag extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mRCView.setAdapter(mAdapter);
+        mRCView.setAdapter(mRCVAdapter);
     }
 
 
