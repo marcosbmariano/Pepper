@@ -23,7 +23,8 @@
             android:name=".sentence_editor.SentencesEditorActivity"
             android:label="@string/title_activity_sentences_editor"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.marcos.test2.MainActivity" />
