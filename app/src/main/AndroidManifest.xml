@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".sentence_editor.SentencesEditorActivity"
+            android:name=".sentence_editor.PhrasesEditorActivity"
             android:label="@string/title_activity_sentences_editor"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"

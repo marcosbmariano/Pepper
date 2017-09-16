@@ -1,26 +1,27 @@
 package com.example.marcos.test2;
 
 import android.content.Intent;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.os.HandlerThread;
+import android.os.Message;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.aldebaran.qi.QiCallback;
 import com.aldebaran.qi.sdk.Qi;
 import com.aldebaran.qi.sdk.object.interaction.Say;
-import com.example.marcos.test2.sentence_editor.SentenceModel;
-import com.example.marcos.test2.sentence_editor.SentencesEditorActivity;
-import com.example.marcos.test2.sentence_editor.SentencesEditorFrag;
-import com.example.marcos.test2.sentence_editor.SentencesEditorMVP;
-import com.example.marcos.test2.sentence_editor.SentencesPresenterLoader;
-import com.example.marcos.test2.sentence_editor.SentencesRealmRCVAdapter;
+import com.example.marcos.test2.application.PepperApplication;
+import com.example.marcos.test2.sentence_editor.PhraseModel;
+import com.example.marcos.test2.sentence_editor.PhrasesEditorActivity;
+import com.example.marcos.test2.tasks.Task;
 
-import javax.inject.Inject;
+import java.util.Random;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
@@ -29,13 +30,9 @@ import io.realm.RealmResults;
  * the same thing every time. It would be even better if the sentences are easily customizable
  */
 
-
 public class MainActivity extends AppCompatActivity{
     private static final String TAG = "SayActivity";
-    //private SentencesEditorMVP.Presenter mSentencesPresenter;
-    //private SentencesPresenterLoader mSPLoader;
-    //@Inject SentencesRealmRCVAdapter mRCVAdapter;
-    private Button mButton;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,77 +42,99 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void setupViews(){
-        mButton = (Button)findViewById(R.id.button);
-        mButton.setOnClickListener(new View.OnClickListener() {
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startSampleTask();
+
+    }
+    /**
+        This is what I have in mind that maybe could be used to chain actions from Pepper.
+     Everything but the RUN_ON_UI_THREAD runs in a background thread (HandlerThread). The main idea
+     is to separate each Task in an object that could trigger another tasks or report back to the UI
+     thread, and based on the answer from the callbacks (or another means) a Task can be selected to be
+     started or the background thread can be finished by issuing a command to the UI thread.
+     Each task can send data to other Task or to the UI thread through a Message,
+     This is very crude and it would need more time to test and make work properly
+     */
+
+    private void startSampleTask(){
+        HandlerThread thread = new HandlerThread("Other THread", Process.THREAD_PRIORITY_BACKGROUND);
+        thread.start();
+        Task firstTask = new Task(thread.getLooper(), "Greeting User Task"){
+
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SentencesEditorActivity.class));
+            protected int mainTask(Message message) {
+                Log.e(getTaskName(), "Hello human, how are you?");
+
+                /**
+                 * Some command can be send to Pepper here and based on the response
+                 * another task can be selected to run next, and so on
+                 */
+
+                Random random = new Random();
+                return random.nextBoolean() ? Task.SECONDARY_TASK : Task.THIRD_TASK;
             }
-        });
+        };
+
+        Task secondTask = new Task("Greeting Second task") {
+            @Override
+            protected int mainTask(Message message) {
+                Log.e(getTaskName(), "Human answers ok, Further human interaction");
+                return Task.SECONDARY_TASK;
+            }
+        };
+
+        Task thirdTask = new Task("Gretting Third task") {
+            @Override
+            protected int mainTask(Message message) {
+                Log.e(getTaskName(), "Human is moody, Don't want interaction, Not further human interaction");
+                return Task.RUN_ON_UI_THREAD;
+            }
+        };
+        firstTask.setThirdTask(thirdTask);
+        firstTask.setSecondaryTask(secondTask);
+
+
+        Task secondTaskStep2 = new Task("Second task continuation") {
+            @Override
+            protected int mainTask(Message message) {
+                Log.e(getTaskName(), "Human say good by. No Further human interaction");
+                return Task.RUN_ON_UI_THREAD;
+            }
+        };
+        secondTask.setSecondaryTask(secondTaskStep2);
+
+        firstTask.startTask();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_sentences_editor:
+                startActivity(new Intent(MainActivity.this, PhrasesEditorActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        //inject everything that shares lifecycle with the loader/activity
-//        mSPLoader.getComponent().inject(this);
-//        mSPLoader.getComponent().inject( //inject fragment
-//                (SentencesEditorFrag)getSupportFragmentManager()
-//                        .findFragmentById(R.id.frag_sent_editor));
-//
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        mSentencesPresenter.setView(this);
-//        mSentencesPresenter.loadFilesList();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        //mSentencesPresenter.deleteView();
-//    }
-
-//    @Override
-//    public Loader onCreateLoader(int id, Bundle args) {
-//        return new SentencesPresenterLoader(this);
-//    }
-
-//    @Override
-//    public void onLoadFinished(Loader loader, Object presenter) {
-//        mSPLoader = (SentencesPresenterLoader)loader;
-//        mSentencesPresenter = (SentencesEditorMVP.Presenter) presenter;
-//    }
-
-//    @Override
-//    public void onLoaderReset(Loader loader) {
-//        mSentencesPresenter.deleteView();
-//        mSentencesPresenter = null;
-//    }
-
-    private void sayHello(){
-        Say say = new Say(this);
-        say.run("Hello, world!").then(Qi.onUiThread(new QiCallback<Void>() {
-            @Override
-            public void onResult(Void ignore) {
-                Log.d(TAG, "result on thread " + Thread.currentThread().getName());
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                Log.e(TAG, "error", error);
-            }
-
-            @Override
-            public void onCancel() {
-                Log.w(TAG, "cancel");
-            }
-        }));
-
-    }
 
 
 }

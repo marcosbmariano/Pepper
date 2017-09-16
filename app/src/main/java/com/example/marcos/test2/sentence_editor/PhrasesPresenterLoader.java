@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
+import com.example.marcos.test2.PepperMVP;
 import com.example.marcos.test2.application.PepperApplication;
 
 import javax.inject.Inject;
@@ -15,17 +16,17 @@ import io.realm.RealmConfiguration;
  * Presenter l
  */
 
-public class SentencesPresenterLoader extends Loader<SentencesEditorMVP.Presenter>{
+public class PhrasesPresenterLoader extends Loader<PepperMVP.Presenter>{
     private static String TAG = "Loader";
-    SentencesEditorComponent mComponent;
-    @Inject SentencesEditorMVP.Presenter mSentencesPresenter;
+    PhraseEditorComponent mComponent;
+    @Inject PepperMVP.Presenter mPhrasesPresenter;
     /**
      * @param context used to retrieve the application context.
      */
-    public SentencesPresenterLoader(Context context) {
+    public PhrasesPresenterLoader(Context context) {
         super(context);
         initializeRealm();
-        mComponent = DaggerSentencesEditorComponent.builder().build();
+        mComponent = DaggerPhraseEditorComponent.builder().build();
         mComponent.inject(this);
 
     }
@@ -33,7 +34,7 @@ public class SentencesPresenterLoader extends Loader<SentencesEditorMVP.Presente
     private void initializeRealm(){
         Realm.init(PepperApplication.getContext());
         RealmConfiguration config = new RealmConfiguration.Builder()
-                .name(SentencesRepository.REALM_NAME)
+                .name(PhrasesRepository.REALM_NAME)
                 .build();
         Realm.setDefaultConfiguration(config);
     }
@@ -42,17 +43,17 @@ public class SentencesPresenterLoader extends Loader<SentencesEditorMVP.Presente
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
-        mComponent.inject((SentencesPresenter)mSentencesPresenter);
+        mComponent.inject((PhrasesPresenter) mPhrasesPresenter);
 
-        if(((SentencesPresenter) mSentencesPresenter).mSentencesRepo == null ){ //TODO fix this
+        if(((PhrasesPresenter) mPhrasesPresenter).mPhrasesRepo == null ){ //TODO fix this
             Log.e(TAG, "FAIL");
         }
-        deliverResult(mSentencesPresenter);
+        deliverResult(mPhrasesPresenter);
     }
 
     @Override
     protected boolean onCancelLoad() {
-        mSentencesPresenter.closeRepositories();//TODO here or reset
+        mPhrasesPresenter.closeRepositories();//TODO here or reset
         Log.e(TAG, "OnCancelLoad");
         return super.onCancelLoad();
     }
@@ -64,7 +65,7 @@ public class SentencesPresenterLoader extends Loader<SentencesEditorMVP.Presente
         super.onReset();
     }
 
-    public SentencesEditorComponent getComponent(){
+    public PhraseEditorComponent getComponent(){
         return mComponent;
     }
 

@@ -1,4 +1,6 @@
-package com.example.marcos.test2.sentence_editor;
+package com.example.marcos.test2;
+
+import com.example.marcos.test2.sentence_editor.PhraseModel;
 
 import io.realm.RealmResults;
 
@@ -6,21 +8,21 @@ import io.realm.RealmResults;
  * TODO: Add class header comment.
  */
 
-public class SentencesEditorMVP {
+public class PepperMVP {
 
     public interface Model{
 
     }
 
     public interface View{
-        void loadData(RealmResults<SentenceModel> models, int what);
+        void loadData(RealmResults<PhraseModel> models, int what);
     }
 
     public interface Presenter{
         void deleteView();
         void setView(View view);
         void loadFilesList();
-        void receiveFilesFromRepo(RealmResults<SentenceModel> files);
+        void receiveFilesFromRepo(RealmResults<PhraseModel> files);
         void closeRepositories();
     }
 

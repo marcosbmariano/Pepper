@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.example.marcos.test2.sentence_editor.NewSentenceFragment">
+    tools:context="com.example.marcos.test2.sentence_editor.NewPhraseFragment">
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Add new sentence."
-        app:layout_constraintBottom_toTopOf="@+id/edt_new_sentence"
+        app:layout_constraintBottom_toTopOf="@+id/edt_new_phrase"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp" />
     <EditText
-        android:id="@+id/edt_new_sentence"
+        android:id="@+id/edt_new_phrase"
         android:layout_width="0dp"
         android:layout_height="54dp"
         tools:layout_constraintTop_creator="1"
@@ -38,21 +38,21 @@
         android:layout_marginTop="8dp"
         android:text="Cancel"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_new_sentence"
-        app:layout_constraintRight_toLeftOf="@+id/btn_add_sentence"
+        app:layout_constraintTop_toBottomOf="@+id/edt_new_phrase"
+        app:layout_constraintRight_toLeftOf="@+id/btn_add_phrase"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="18dp"
         android:layout_marginEnd="8dp" />
 
     <Button
-        android:id="@+id/btn_add_sentence"
+        android:id="@+id/btn_add_phrase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Add New"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_new_sentence"
+        app:layout_constraintTop_toBottomOf="@+id/edt_new_phrase"
         app:layout_constraintLeft_toRightOf="@+id/btn_cancel"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="8dp"

@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.marcos.test2.sentence_editor.SentencesEditorFrag">
+    tools:context="com.example.marcos.test2.sentence_editor.PhrasesEditorFrag">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcv_sent_editor"
+        android:id="@+id/rcv_phrase_editor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"

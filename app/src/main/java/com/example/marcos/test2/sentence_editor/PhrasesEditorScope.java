@@ -9,7 +9,7 @@ import javax.inject.Scope;
  * TODO: Add class header comment.
  */
 @Scope
-@SentencesEditorScope
+@PhrasesEditorScope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SentencesEditorScope {
+public @interface PhrasesEditorScope {
 }
